@@ -1,3 +1,105 @@
-Today we tested the github
-I am testing
-Minutes for meeting
+INDIVIDUAL TASKS AND ROLES
+
+
+Igor – Documenter
+Booked a library room for Mondays 22nd and 29th of January from 6-9pm for our team meetings outside lab hours.
+Created content for the documentation of the use cases selected for iteration 1.
+
+Andrew – Documenter
+Created the final version of the Domain Model diagram.
+Created content for the documentation of the Software Requirements Specification (parts 9. Constraints, 10. Solution ideas and 11. Acronyms and abbreviations).
+
+Javier – Organizer/Documenter
+Created and edited a Google Document to keep track of the ideas that came up and the progress that we made during team meetings.
+Divided tasks and assigned roles to each member of the team, keeping track of what everyone has to do.
+TO DO: Create content for the documentation of the Software Requirements Specification (parts 1 to 4 and 12).
+
+Kosta – Coder
+Review JUNIT to be able to write test cases before writing the code.
+Create and pass several test cases using JUnit.
+Implement “Login” use case using Java.
+Start working on a database system to store
+
+Marzie – Documenter
+Set up a group on Slack for team communication and sent reminders for team meetings.
+Edit and format in LaTeX the Software Requirements Specification document using the content provided by the other documenters of the team.
+
+Sirage – Coder
+Review JUNIT to be able to write test cases before writing the code.
+Create and pass several test cases using JUnit.
+Implement “AddTransaction” and “ViewTransaction” use case using Java.
+
+Talar –Documenter/Organizer
+Set up a GitHub repository with version control for all the documents of the project and managed the version control?
+Created content for the documentation of the Software Requirements Specification (parts 5 to 7).
+
+Zayn – Documenter
+Created the first version of the Domain Model diagram.
+Created the Use Cases diagram.
+
+COMMON TASKS
+
+
+Read project and chapters of the book, slides or other useful material related to all aspects of Iteration 1.
+Collaborate with organizers to divide and assign tasks, plan the timeline for Iteration 1 and agree on meeting times, and individual deadlines.
+Contribute with ideas to choose and define all elements of the domain model and its relationships. (Brainstorming)
+Contribute to create user stories to transform into use cases and select the most relevant to implement and test for the first iteration.
+Upload frequent updates of individual documents to the repository/Slack.
+Verify other team members’ work and give constructive feedback.
+Assist other team members with the most demanding parts of the project.
+
+TEAM MEETINGS
+
+
+Thursday 18th of January 2018, Laboratory H-903, 21:30-23 (90 minutes)
+
+Presentations, get to know each other a bit, our skills, experience, preferences and availabilities.
+Exchange contact information and set up team communication tools.
+Read the project together, making sure we all understand it the same way and that we agree in what needs to be done.
+Decide priorities and a timeline for iteration 1.
+Brainstorming for the first sketch of the domain model and use cases.
+Divide tasks and assign individual roles and deadlines.
+Agreed to meet every Monday from 18:00 to 21:00 in addition to lab hours.
+Book library room for next team meeting.
+
+Monday 22nd of January 2018, Webster Library LB-583, 18:00-21:30 (210 minutes)
+
+Short SCRUM to present everybody’s progress and impediments on their tasks.
+Reviewed carefully the first draft of the domain model diagram(sketched by Zayn). Defined more precisely some of its elements.
+Came up with the main scenarios and define the 3 main use cases to be implemented by the coders(“AddTransaction”, “ViewTransaction” and “Login”).
+Adjust and redefine roles and tasks for current iteration.
+Choose new individuals deadlines.
+
+Thursday 25th of January 2018, Laboratory H-903, 21:30-23 (90 minutes)
+
+Short SCRUM to present everybody’s progress and impediments on their tasks.
+Reviewed carefully the new draft of the domain model diagram(sketched by Andrew).
+Figure out more use cases, its sequence, relationship and actores to sketch a first use case diagram.
+Review first draft of the unit tests and redefine the main use cases accordingly.
+Distribute more specific documentation tasks among documenters for the requirements document.
+Choose new individual deadlines.
+Book library room for next team meeting.
+   
+
+Monday 29th of January 2018, Grey Nuns Building B-104, 18:00-21:00 (180 minutes)
+
+Short SCRUM to present everybody’s progress and impediments on their tasks.
+Reviewed final design of the domain model diagram(sketched by Andrew).
+Reviewed carefully the first draft of the use cases diagram(sketched by Zayn). Defined more precisely some of its elements.
+Review the code of the implemented use cases and made adjustments to improve alignment of our view of the project.
+Review first draft of the requirements document (formatted in Latex by Marzie). Assigned changes and corrections to be made to prepare for the demo on the next lab/meeting.
+Choose new individual deadlines.
+
+Thursday 1st of January 2018, Laboratory H-903, 21:30-23:30 (120 minutes)
+
+Presented our code and requirements document to the lab instructor, ran the implemented use cases and discussed with instructor about possible improvements to be made.
+Accordingly to the feedback received by the lab instructor, adjust the domain model and the use case diagram to reflect more faithfully its implementation.
+Decided on additional changes and improvements to be made on the requirements document and the code.
+Choose new individual deadlines.
+
+
+Thursday 8th of January 2018, Laboratory H-903, 21:30-23:30 (120 minutes)
+
+Presented our final version of the code and requirements document to the lab instructor, and got a positive feedback.
+Made minor adjustments to the final document and assigned team member to submit the documents for iteration 1.
+Discuss the next steps to follow for iteration 2.
