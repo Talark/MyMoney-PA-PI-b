@@ -3,7 +3,7 @@ package com.jcg;
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 
-//comment ...
+
 public class SwingMVCDemo {
 
 	public static void main(String[] args) {

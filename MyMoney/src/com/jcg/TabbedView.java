@@ -78,10 +78,9 @@ public class TabbedView extends JFrame {
 	
 	public void updateTab1(){
 		try {
-			model = new Model();
+			model.setDataVector(Model.retrieveDATA(), Model.TABLE_HEADER);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		table.setModel(model);
 	}
 }
