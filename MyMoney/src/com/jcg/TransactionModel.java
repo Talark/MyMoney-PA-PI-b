@@ -3,11 +3,11 @@ package com.jcg;
 public class TransactionModel {
 private int transactionId;
 private double amount;
-private String transactionDate;
+private java.sql.Date transactionDate;
 private int transactionTypeId;
 private int transactionCategoryId;
 
-public TransactionModel(int transactionId, double amount, String transactionDate, int transactionTypeId, int transactionCategoryId) {
+public TransactionModel(int transactionId, double amount, java.sql.Date transactionDate, int transactionTypeId, int transactionCategoryId) {
 	super();
 	this.transactionId = transactionId;
 	this.amount = amount;
@@ -21,7 +21,7 @@ public int getTransactionId() {
 public double getAmount() {
 	return amount;
 }
-public String getTransactionDate() {
+public java.sql.Date getTransactionDate() {
 	return transactionDate;
 }
 public int getTransactionTypeId() {
@@ -33,7 +33,7 @@ public void setTransactionId(int transactionId) {
 public void setAmount(double amount) {
 	this.amount = amount;
 }
-public void setTransactionDate(String transactionDate) {
+public void setTransactionDate(java.sql.Date transactionDate) {
 	this.transactionDate = transactionDate;
 }
 public void setTransactionTypeId(int transactionTypeId) {

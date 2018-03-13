@@ -20,6 +20,7 @@ public class Controller implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		String searchTerm = searchTermTextField.getText();
+		//Object[] existingData = model.getDataVector().toArray();
 		if (searchTerm != null && !"".equals(searchTerm)) {
 			Object[][] newData = new Object[Model.DATArows][];
 			int idx = 0;

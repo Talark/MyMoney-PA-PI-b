@@ -1,6 +1,7 @@
 package com.jcg;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.sql.SQLException;
 
 import javax.swing.*;
@@ -20,10 +21,7 @@ public class TabbedView extends JFrame {
         
         JPanel jp1 = createTab1();
        
-        JPanel jp2 = new JPanel();
-        JLabel label2 = new JLabel();
-        label2.setText("You are in area of Tab2");
-        jp2.add(label2);
+        JPanel jp2 = createTab2();
         
         JPanel jp3 = new JPanel();
         JLabel label3 = new JLabel();
@@ -31,7 +29,7 @@ public class TabbedView extends JFrame {
         jp3.add(label3);
         
         jtp.addTab("View Transactions", jp1);
-        jtp.addTab("Tab2", jp2);
+        jtp.addTab("Add Transaction", jp2);
         jtp.addTab("Tab3", jp3);
 	}
 
@@ -76,11 +74,38 @@ public class TabbedView extends JFrame {
 		return containerPanel;
 	}
 	
-	public void updateTab1(){
-		try {
-			model.setDataVector(Model.retrieveDATA(), Model.TABLE_HEADER);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	private JPanel createTab2() {
+		
+		 JLabel label1 = new JLabel();
+	     label1.setText("Amount");
+	     JLabel label2 = new JLabel();
+	     label2.setText("Date");
+	     JLabel label3 = new JLabel();
+	     label3.setText("Type");
+	     JLabel label4 = new JLabel();
+	     label4.setText("Category");    
+	 
+	        
+		JTextField amount = new JTextField(10);
+		JTextField date = new JTextField(10);
+		JTextField type = new JTextField(10);
+		JTextField cat = new JTextField(10);
+		
+		JButton addtrbutton = new JButton("Add Transaction");
+		AddTransacController cont= new AddTransacController(model, amount,date,type,cat);
+		addtrbutton.addActionListener(cont);
+		
+		JPanel containerPanel = new JPanel(new GridLayout(5,2));
+		containerPanel.add(label1);
+		containerPanel.add(amount);
+		containerPanel.add(label2);
+		containerPanel.add(date);
+		containerPanel.add(label3);
+		containerPanel.add(type);
+		containerPanel.add(label4);
+		containerPanel.add(cat);		
+		containerPanel.add(addtrbutton);
+		containerPanel.setVisible(true);
+		return containerPanel;
 	}
 }
