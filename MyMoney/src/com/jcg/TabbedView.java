@@ -1,6 +1,7 @@
 package com.jcg;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.sql.SQLException;
 
@@ -25,18 +26,30 @@ public class TabbedView extends JFrame {
         
         JPanel jp3 = new JPanel();
         JLabel label3 = new JLabel();
-        label3.setText("You are in area of Tab3");
+        label3.setText("You're current balance is: ");
+        label3.setFont(new Font("Myriad Pro",Font.BOLD,28));
         jp3.add(label3);
+        JLabel label4 = new JLabel();
+        label4.setText("...");
+        label4.setFont(new Font("Myriad Pro",Font.BOLD,28));
+        jp3.add(label4);
+        BalanceController balanceCtrl = new BalanceController(label4);
+        try {
+			balanceCtrl.displayBalance();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         
         jtp.addTab("View Transactions", jp1);
         jtp.addTab("Add Transaction", jp2);
-        jtp.addTab("Tab3", jp3);
+        jtp.addTab("View Balance", jp3);
 	}
 
 	private JPanel createTab1() {
 				// Create swing UI components 
-				JTextField searchTermTextField = new JTextField(26);
-				JButton filterButton = new JButton("Filter by category");
+				JLabel catLabel = new JLabel("Category: ");
+				JTextField catTextField = new JTextField(15);
+				JButton filterButton = new JButton("Filter");
 				table = new JTable();
 
 				// Create table model
@@ -50,12 +63,13 @@ public class TabbedView extends JFrame {
 				table.setModel(model);
 
 				// Create controller
-				Controller controller = new Controller(searchTermTextField, model);
+				FilterController controller = new FilterController(catTextField, model);
 				filterButton.addActionListener(controller);
 
 				// Set the view layout
-				JPanel ctrlPane = new JPanel();
-				ctrlPane.add(searchTermTextField);
+				JPanel ctrlPane = new JPanel(new GridLayout(2,2));
+				ctrlPane.add(catLabel);
+				ctrlPane.add(catTextField);
 				ctrlPane.add(filterButton);
 
 				JScrollPane tableScrollPane = new JScrollPane(table);
@@ -64,7 +78,6 @@ public class TabbedView extends JFrame {
 						TitledBorder.CENTER, TitledBorder.TOP));
 
 				JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, ctrlPane, tableScrollPane);
-				splitPane.setDividerLocation(35);
 				splitPane.setEnabled(false);
 
 				// Display it all in a scrolling window and make the window appear

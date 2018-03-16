@@ -34,12 +34,14 @@ public class Model extends DefaultTableModel {
 		
 		DATA = new Object[DATArows][DATAcols];
 		
-		String sqlQuery2 = "SELECT TRANSACTION_ID, amount, transaction_date, transaction_type, transaction_cat FROM transaction, transaction_type, transaction_category WHERE transaction.transaction_type_id = transaction_type.transaction_type_id AND transaction.transaction_cat_id = transaction_category.transaction_cat_id";
+		String sqlQuery2 = "SELECT TRANSACTION_ID, amount, transaction_date, transaction_type, transaction_cat FROM transaction, transaction_type, transaction_category "
+				+ "WHERE transaction.transaction_type_id = transaction_type.transaction_type_id AND transaction.transaction_cat_id = transaction_category.transaction_cat_id "
+				+ "ORDER BY transaction_id ASC";
 		ResultSet rs2 = statement.executeQuery(sqlQuery2);
 		
 		for(int i=0; rs2.next(); i++) {
 				DATA[i][0] = rs2.getString(1);
-				DATA[i][1] = rs2.getString(2);
+				DATA[i][1] = Math.abs(Integer.valueOf(rs2.getString(2)));
 				DATA[i][2] = rs2.getString(3);
 				DATA[i][3] = rs2.getString(4);
 				DATA[i][4] = rs2.getString(5);
@@ -48,36 +50,4 @@ public class Model extends DefaultTableModel {
 		con.close();
 		return DATA;
 	}
-	
-public static int getLastIdTrans() throws SQLException, ClassNotFoundException{
-		
-		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
-		Connection con = DriverManager.getConnection(url, "root", "password");
-		System.out.println("Connection established Successfully");
-		Statement statement=con.createStatement();
-		
-		String sqlQuery = "SELECT MAX(TRANSACTION_ID) FROM transaction";
-		ResultSet rs= statement.executeQuery(sqlQuery);
-		rs.next();
-		int val=rs.getInt(1);
-		con.close();
-		return val;
-
-	}
-	public static int getLastIdTransCat() throws SQLException, ClassNotFoundException{
-		
-		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
-		Connection con = DriverManager.getConnection(url, "root", "password");
-		System.out.println("Connection established Successfully");
-		Statement statement=con.createStatement();
-		
-		String sqlQuery = "SELECT MAX(transaction_cat_id) FROM transaction_category";
-		ResultSet rs= statement.executeQuery(sqlQuery);
-		rs.next();
-		int val=rs.getInt(1);
-		con.close();
-		return val;
-
-	}
-
 }

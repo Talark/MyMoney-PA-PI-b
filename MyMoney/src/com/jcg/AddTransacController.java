@@ -40,7 +40,7 @@ public class AddTransacController implements ActionListener {
 		//prepare transaction ID
 		int transacID = -1;
 		try {
-			transacID = Model.getLastIdTrans()+1;
+			transacID = getLastIdTrans()+1;
 		} catch (ClassNotFoundException | SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -111,7 +111,7 @@ public class AddTransacController implements ActionListener {
 		rs.next();
 		
 		if(!rs.next()){
-			int newId=Model.getLastIdTransCat()+1;
+			int newId= getLastIdTransCat()+1;
 			String sqlQuery2 = "INSERT INTO transaction_category VALUES("+newId+",\""+newcat+"\")";
 			statement.executeUpdate(sqlQuery2);
 			con.close();
@@ -139,5 +139,36 @@ public class AddTransacController implements ActionListener {
 		ps.execute();
 		
 		con.close();
+	}
+	
+public int getLastIdTrans() throws SQLException, ClassNotFoundException{
+		
+		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
+		Connection con = DriverManager.getConnection(url, "root", "password");
+		System.out.println("Connection established Successfully");
+		Statement statement=con.createStatement();
+		
+		String sqlQuery = "SELECT MAX(TRANSACTION_ID) FROM transaction";
+		ResultSet rs= statement.executeQuery(sqlQuery);
+		rs.next();
+		int val=rs.getInt(1);
+		con.close();
+		return val;
+
+	}
+	public int getLastIdTransCat() throws SQLException, ClassNotFoundException{
+		
+		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
+		Connection con = DriverManager.getConnection(url, "root", "password");
+		System.out.println("Connection established Successfully");
+		Statement statement=con.createStatement();
+		
+		String sqlQuery = "SELECT MAX(transaction_cat_id) FROM transaction_category";
+		ResultSet rs= statement.executeQuery(sqlQuery);
+		rs.next();
+		int val=rs.getInt(1);
+		con.close();
+		return val;
+
 	}
 }
