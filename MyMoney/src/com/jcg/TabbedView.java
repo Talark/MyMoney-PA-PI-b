@@ -7,17 +7,20 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class TabbedView extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private Model model;
 	private JTable table;
+	private JTabbedPane jtp;
 
 	public TabbedView() {
         
         setTitle("My Money application");
-        JTabbedPane jtp = new JTabbedPane();
+        jtp = new JTabbedPane();
         getContentPane().add(jtp);
         
         JPanel jp1 = createTab1();
@@ -40,9 +43,12 @@ public class TabbedView extends JFrame {
 			e.printStackTrace();
 		}
         
+        JPanel jp4 = new JPanel();
+        
         jtp.addTab("View Transactions", jp1);
         jtp.addTab("Add Transaction", jp2);
         jtp.addTab("View Balance", jp3);
+        jtp.addTab("Selected Transaction", jp4);
 	}
 
 	private JPanel createTab1() {
@@ -51,7 +57,7 @@ public class TabbedView extends JFrame {
 				JTextField catTextField = new JTextField(15);
 				JButton filterButton = new JButton("Filter");
 				table = new JTable();
-
+				
 				// Create table model
 				try {
 					model = new Model();
@@ -62,7 +68,20 @@ public class TabbedView extends JFrame {
 				}
 				table.setModel(model);
 
-				// Create controller
+				// Make it possible to select a transaction from the table
+				table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			        public void valueChanged(ListSelectionEvent event) {
+			            String id = table.getValueAt(table.getSelectedRow(), 0).toString();
+			            String amt = table.getValueAt(table.getSelectedRow(), 1).toString();
+			            String date = table.getValueAt(table.getSelectedRow(), 2).toString();
+			            String type = table.getValueAt(table.getSelectedRow(), 3).toString();
+			            String cat = table.getValueAt(table.getSelectedRow(), 4).toString();
+			            showTransaction(id, amt, date, type, cat);
+			            jtp.setSelectedIndex(3);
+			        }
+			    });
+				
+				// Create filter controller
 				FilterController controller = new FilterController(catTextField, model);
 				filterButton.addActionListener(controller);
 
@@ -86,17 +105,13 @@ public class TabbedView extends JFrame {
 				containerPanel.setVisible(true);
 		return containerPanel;
 	}
-	
+
 	private JPanel createTab2() {
 		
-		 JLabel label1 = new JLabel();
-	     label1.setText("Amount");
-	     JLabel label2 = new JLabel();
-	     label2.setText("Date");
-	     JLabel label3 = new JLabel();
-	     label3.setText("Type");
-	     JLabel label4 = new JLabel();
-	     label4.setText("Category");    
+		 JLabel label1 = new JLabel("Amount");
+	     JLabel label2 = new JLabel("Date");
+	     JLabel label3 = new JLabel("Type");
+	     JLabel label4 = new JLabel("Category");
 	 
 	        
 		JTextField amount = new JTextField(10);
@@ -105,7 +120,7 @@ public class TabbedView extends JFrame {
 		JTextField cat = new JTextField(10);
 		
 		JButton addtrbutton = new JButton("Add Transaction");
-		AddTransacController cont= new AddTransacController(model, amount,date,type,cat);
+		AddTransacController cont= new AddTransacController(model, jtp, amount,date,type,cat);
 		addtrbutton.addActionListener(cont);
 		
 		JPanel containerPanel = new JPanel(new GridLayout(5,2));
@@ -120,5 +135,37 @@ public class TabbedView extends JFrame {
 		containerPanel.add(addtrbutton);
 		containerPanel.setVisible(true);
 		return containerPanel;
+	}
+	
+	//adds content to tab 4
+	private void showTransaction(String id, String amt, String date, String type, String cat) {
+		 
+		 JLabel label1 = new JLabel("Transaction ID: ");
+		 JLabel label1value = new JLabel(id);
+		 JLabel label2 = new JLabel("Amount: ");
+		 JLabel label2value = new JLabel(amt);
+	     JLabel label3 = new JLabel("Date: ");
+		 JLabel label3value = new JLabel(date);
+		 JLabel label4 = new JLabel("Type: ");
+		 JLabel label4value = new JLabel(type);
+	     JLabel label5 = new JLabel("Category: "); 
+		 JLabel label5value = new JLabel(cat);
+		 
+		 JButton del = new JButton("Delete Transaction");
+	     
+	     JPanel jpan = (JPanel) jtp.getComponentAt(3);
+	     jpan.setLayout(new GridLayout(6,2));
+	     jpan.add(label1);
+	     jpan.add(label1value);
+	     jpan.add(label2);
+	     jpan.add(label2value);
+	     jpan.add(label3);
+	     jpan.add(label3value);
+	     jpan.add(label4);
+	     jpan.add(label4value);
+	     jpan.add(label5);
+	     jpan.add(label5value);
+	     jpan.add(del);
+
 	}
 }

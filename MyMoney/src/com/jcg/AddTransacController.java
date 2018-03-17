@@ -2,6 +2,8 @@ package com.jcg;
 
 import java.awt.event.ActionEvent;	
 import java.awt.event.ActionListener;
+
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,17 +19,19 @@ import java.text.SimpleDateFormat;
 
 public class AddTransacController implements ActionListener {
 	
+	private DefaultTableModel model;
+	private JTabbedPane jtp;
 	private JTextField amount;
 	private JTextField date;
 	private JTextField type;
 	private JTextField cat;
-	private DefaultTableModel model;
 	
-	public AddTransacController(DefaultTableModel model, JTextField amount, JTextField date,
+	public AddTransacController(DefaultTableModel model, JTabbedPane jtp, JTextField amount, JTextField date,
 			JTextField type, JTextField cat) {
 		super();	
 	
 		this.model=model;
+		this.jtp = jtp;
 		this.amount=amount;
 		this.date=date;
 		this.type=type;
@@ -60,6 +64,8 @@ public class AddTransacController implements ActionListener {
 		
 		//prepare type ID
 		int typeId= getTypeID(type.getText());
+		if(typeId==2)
+			addAmount=-addAmount;
 		
 		//prepare category ID
 		int catId = -1;
@@ -85,6 +91,9 @@ public class AddTransacController implements ActionListener {
 		} catch (ClassNotFoundException | SQLException e1) {
 			e1.printStackTrace();
 		}
+		
+		//Switch to the View Balance tab
+		jtp.setSelectedIndex(2);
 	}
 		
 	private int getTypeID(String StringType){
