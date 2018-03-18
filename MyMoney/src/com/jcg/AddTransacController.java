@@ -1,8 +1,10 @@
 package com.jcg;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;	
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -25,9 +27,10 @@ public class AddTransacController implements ActionListener {
 	private JTextField date;
 	private JTextField type;
 	private JTextField cat;
+	private JLabel balanceLabel;
 	
 	public AddTransacController(DefaultTableModel model, JTabbedPane jtp, JTextField amount, JTextField date,
-			JTextField type, JTextField cat) {
+			JTextField type, JTextField cat, JLabel balanceLabel) {
 		super();	
 	
 		this.model=model;
@@ -36,6 +39,7 @@ public class AddTransacController implements ActionListener {
 		this.date=date;
 		this.type=type;
 		this.cat=cat;
+		this.balanceLabel = balanceLabel;
 	}
 
 	@Override
@@ -91,6 +95,20 @@ public class AddTransacController implements ActionListener {
 		} catch (ClassNotFoundException | SQLException e1) {
 			e1.printStackTrace();
 		}
+		
+		//update the balance
+		AccountModel accModel = new AccountModel();
+		try {
+			accModel.updateBalance();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		balanceLabel.setText(Math.abs(accModel.getBalance()) + " $");
+        if(accModel.getBalance() < 0)
+        	balanceLabel.setForeground(Color.RED);	
+		else
+			balanceLabel.setForeground(Color.GREEN);
+				
 		
 		//Switch to the View Balance tab
 		jtp.setSelectedIndex(2);
@@ -163,7 +181,6 @@ public int getLastIdTrans() throws SQLException, ClassNotFoundException{
 		int val=rs.getInt(1);
 		con.close();
 		return val;
-
 	}
 	public int getLastIdTransCat() throws SQLException, ClassNotFoundException{
 		
@@ -178,6 +195,5 @@ public int getLastIdTrans() throws SQLException, ClassNotFoundException{
 		int val=rs.getInt(1);
 		con.close();
 		return val;
-
 	}
 }

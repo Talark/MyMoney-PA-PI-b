@@ -1,5 +1,6 @@
 package com.jcg;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -16,6 +17,7 @@ public class TabbedView extends JFrame {
 	private Model model;
 	private JTable table;
 	private JTabbedPane jtp;
+	private JLabel balLabel;
 
 	public TabbedView() {
         
@@ -24,24 +26,10 @@ public class TabbedView extends JFrame {
         getContentPane().add(jtp);
         
         JPanel jp1 = createTab1();
-       
-        JPanel jp2 = createTab2();
         
-        JPanel jp3 = new JPanel();
-        JLabel label3 = new JLabel();
-        label3.setText("You're current balance is: ");
-        label3.setFont(new Font("Myriad Pro",Font.BOLD,28));
-        jp3.add(label3);
-        JLabel label4 = new JLabel();
-        label4.setText("...");
-        label4.setFont(new Font("Myriad Pro",Font.BOLD,28));
-        jp3.add(label4);
-        BalanceController balanceCtrl = new BalanceController(label4);
-        try {
-			balanceCtrl.displayBalance();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        JPanel jp3 = createTab3();
+        
+        JPanel jp2 = createTab2();
         
         JPanel jp4 = createTab4();
         
@@ -77,13 +65,15 @@ public class TabbedView extends JFrame {
 				// Make it possible to select a transaction from the table
 				table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			        public void valueChanged(ListSelectionEvent event) {
-			            String id = table.getValueAt(table.getSelectedRow(), 0).toString();
-			            String amt = table.getValueAt(table.getSelectedRow(), 1).toString();
-			            String date = table.getValueAt(table.getSelectedRow(), 2).toString();
-			            String type = table.getValueAt(table.getSelectedRow(), 3).toString();
-			            String cat = table.getValueAt(table.getSelectedRow(), 4).toString();
-			            showTransaction(id, amt, date, type, cat);
-			            jtp.setSelectedIndex(3);
+			            if(table.getSelectedRow()>=0){
+			            	String id = table.getValueAt(table.getSelectedRow(), 0).toString();
+			            	String amt = table.getValueAt(table.getSelectedRow(), 1).toString();
+			            	String date = table.getValueAt(table.getSelectedRow(), 2).toString();
+			            	String type = table.getValueAt(table.getSelectedRow(), 3).toString();
+			            	String cat = table.getValueAt(table.getSelectedRow(), 4).toString();
+			            	showTransaction(id, amt, date, type, cat);
+			            	jtp.setSelectedIndex(3);
+			            }
 			        }
 			    });
 				
@@ -132,7 +122,7 @@ public class TabbedView extends JFrame {
 		JTextField cat = new JTextField(10);
 		
 		JButton addtrbutton = new JButton("Add Transaction");
-		AddTransacController cont= new AddTransacController(model, jtp, amount,date,type,cat);
+		AddTransacController cont= new AddTransacController(model, jtp, amount,date,type,cat, balLabel);
 		addtrbutton.addActionListener(cont);
 		
 		JPanel containerPanel = new JPanel(new GridLayout(5,2));
@@ -145,6 +135,31 @@ public class TabbedView extends JFrame {
 		containerPanel.add(label4);
 		containerPanel.add(cat);		
 		containerPanel.add(addtrbutton);
+		containerPanel.setVisible(true);
+		return containerPanel;
+	}
+	
+	private JPanel createTab3() {
+		JPanel containerPanel = new JPanel();
+		
+		JLabel label = new JLabel("Your current balance is: ");
+        label.setFont(new Font("Myriad Pro",Font.BOLD,28));
+        containerPanel.add(label);
+        this.balLabel = new JLabel();
+        balLabel.setFont(new Font("Myriad Pro",Font.BOLD,28));
+        containerPanel.add(balLabel);
+        AccountModel accModel = new AccountModel();
+        try {
+			accModel.updateBalance();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        balLabel.setText(Math.abs(accModel.getBalance()) + " $");
+        if(accModel.getBalance() < 0)
+        	balLabel.setForeground(Color.RED);	
+			else
+				balLabel.setForeground(Color.GREEN);
+
 		containerPanel.setVisible(true);
 		return containerPanel;
 	}

@@ -10,8 +10,8 @@ import java.sql.Statement;
 @SuppressWarnings("serial")
 public class Model extends DefaultTableModel {
 	
-	public static final Object[] TABLE_HEADER = { "Transaction id", "Amount",
-			"Transaction Date", "Transaction Type", "Transaction Category"};
+	public static final Object[] TABLE_HEADER = { "Transaction ID", "Amount",
+			"Date", "Type", "Category"};
 	public static int DATArows;  
 	public static final int DATAcols = 5;
 	public static Object[][] DATA;
