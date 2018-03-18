@@ -43,7 +43,7 @@ public class TabbedView extends JFrame {
 			e.printStackTrace();
 		}
         
-        JPanel jp4 = new JPanel();
+        JPanel jp4 = createTab4();
         
         jtp.addTab("View Transactions", jp1);
         jtp.addTab("Add Transaction", jp2);
@@ -53,8 +53,14 @@ public class TabbedView extends JFrame {
 
 	private JPanel createTab1() {
 				// Create swing UI components 
-				JLabel catLabel = new JLabel("Category: ");
+				JLabel typeLabel = new JLabel("Type");
+				JTextField typeTextField = new JTextField(15);
+				JLabel catLabel = new JLabel("Category");
 				JTextField catTextField = new JTextField(15);
+				JLabel fromDateLabel = new JLabel("From date");
+				JTextField fromDateTextField = new JTextField(15);
+				JLabel toDateLabel = new JLabel("To date");
+				JTextField toDateTextField = new JTextField(15);
 				JButton filterButton = new JButton("Filter");
 				table = new JTable();
 				
@@ -82,13 +88,19 @@ public class TabbedView extends JFrame {
 			    });
 				
 				// Create filter controller
-				FilterController controller = new FilterController(catTextField, model);
+				FilterController controller = new FilterController(typeTextField, catTextField, fromDateTextField, toDateTextField, model);
 				filterButton.addActionListener(controller);
 
 				// Set the view layout
-				JPanel ctrlPane = new JPanel(new GridLayout(2,2));
+				JPanel ctrlPane = new JPanel(new GridLayout(5,2));
+				ctrlPane.add(typeLabel);
+				ctrlPane.add(typeTextField);
 				ctrlPane.add(catLabel);
 				ctrlPane.add(catTextField);
+				ctrlPane.add(fromDateLabel);
+				ctrlPane.add(fromDateTextField);
+				ctrlPane.add(toDateLabel);
+				ctrlPane.add(toDateTextField);
 				ctrlPane.add(filterButton);
 
 				JScrollPane tableScrollPane = new JScrollPane(table);
@@ -137,23 +149,21 @@ public class TabbedView extends JFrame {
 		return containerPanel;
 	}
 	
-	//adds content to tab 4
-	private void showTransaction(String id, String amt, String date, String type, String cat) {
-		 
-		 JLabel label1 = new JLabel("Transaction ID: ");
-		 JLabel label1value = new JLabel(id);
+	private JPanel createTab4() {
+		JLabel label1 = new JLabel("Transaction ID: ");
+		 JLabel label1value = new JLabel();
 		 JLabel label2 = new JLabel("Amount: ");
-		 JLabel label2value = new JLabel(amt);
+		 JLabel label2value = new JLabel();
 	     JLabel label3 = new JLabel("Date: ");
-		 JLabel label3value = new JLabel(date);
+		 JLabel label3value = new JLabel();
 		 JLabel label4 = new JLabel("Type: ");
-		 JLabel label4value = new JLabel(type);
+		 JLabel label4value = new JLabel();
 	     JLabel label5 = new JLabel("Category: "); 
-		 JLabel label5value = new JLabel(cat);
+		 JLabel label5value = new JLabel();
 		 
 		 JButton del = new JButton("Delete Transaction");
 	     
-	     JPanel jpan = (JPanel) jtp.getComponentAt(3);
+	     JPanel jpan = new JPanel();
 	     jpan.setLayout(new GridLayout(6,2));
 	     jpan.add(label1);
 	     jpan.add(label1value);
@@ -167,5 +177,21 @@ public class TabbedView extends JFrame {
 	     jpan.add(label5value);
 	     jpan.add(del);
 
+		return jpan;
+	}
+	
+	//adds content to tab 4
+	private void showTransaction(String id, String amt, String date, String type, String cat) {
+		 JPanel jp = (JPanel) jtp.getComponentAt(3);
+		 JLabel label1value = (JLabel) jp.getComponent(1);
+		 label1value.setText(id);
+		 JLabel label2value = (JLabel) jp.getComponent(3);
+		 label2value.setText(amt);
+		 JLabel label3value = (JLabel) jp.getComponent(5);
+		 label3value.setText(date);
+		 JLabel label4value = (JLabel) jp.getComponent(7);
+		 label4value.setText(type);
+		 JLabel label5value = (JLabel) jp.getComponent(9);
+		 label5value.setText(cat);		 
 	}
 }
