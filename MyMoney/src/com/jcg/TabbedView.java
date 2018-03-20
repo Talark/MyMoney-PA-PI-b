@@ -122,8 +122,10 @@ public class TabbedView extends JFrame {
 		JTextField cat = new JTextField(10);
 		
 		JButton addtrbutton = new JButton("Add Transaction");
-		AddTransacController cont= new AddTransacController(model, jtp, amount,date,type,cat, balLabel);
+		TransacController cont= new TransacController(model, jtp, amount,date,type,cat, balLabel);
 		addtrbutton.addActionListener(cont);
+		addtrbutton.setActionCommand("addBtn");
+
 		
 		JPanel containerPanel = new JPanel(new GridLayout(5,2));
 		containerPanel.add(label1);
@@ -165,7 +167,7 @@ public class TabbedView extends JFrame {
 	}
 	
 	private JPanel createTab4() {
-		JLabel label1 = new JLabel("Transaction ID: ");
+		 JLabel label1 = new JLabel("Transaction ID: ");
 		 JLabel label1value = new JLabel();
 		 JLabel label2 = new JLabel("Amount: ");
 		 JLabel label2value = new JLabel();
@@ -177,6 +179,9 @@ public class TabbedView extends JFrame {
 		 JLabel label5value = new JLabel();
 		 
 		 JButton del = new JButton("Delete Transaction");
+		 TransacController control= new TransacController(model, jtp, balLabel);
+		 del.addActionListener(control);
+		 del.setActionCommand("deleteBtn");
 	     
 	     JPanel jpan = new JPanel();
 	     jpan.setLayout(new GridLayout(6,2));

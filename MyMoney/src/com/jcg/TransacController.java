@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class AddTransacController implements ActionListener {
+public class TransacController implements ActionListener {
 	
 	private DefaultTableModel model;
 	private JTabbedPane jtp;
@@ -29,10 +30,9 @@ public class AddTransacController implements ActionListener {
 	private JTextField cat;
 	private JLabel balanceLabel;
 	
-	public AddTransacController(DefaultTableModel model, JTabbedPane jtp, JTextField amount, JTextField date,
+	public TransacController(DefaultTableModel model, JTabbedPane jtp, JTextField amount, JTextField date,
 			JTextField type, JTextField cat, JLabel balanceLabel) {
 		super();	
-	
 		this.model=model;
 		this.jtp = jtp;
 		this.amount=amount;
@@ -42,51 +42,66 @@ public class AddTransacController implements ActionListener {
 		this.balanceLabel = balanceLabel;
 	}
 
+	public TransacController(Model model, JTabbedPane jtp, JLabel balLabel) {
+		super();	
+		this.model=model;
+		this.jtp = jtp;	
+		this.balanceLabel = balLabel;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e){
 		
-		//prepare transaction ID
-		int transacID = -1;
-		try {
-			transacID = getLastIdTrans()+1;
-		} catch (ClassNotFoundException | SQLException e1) {
-			e1.printStackTrace();
-		}
 		
-		//prepare amount
-		double addAmount=Double.parseDouble(amount.getText());
-		
-		//prepare date
-		java.sql.Date myDate = null;
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			Date tempDate = format.parse(date.getText());
-			myDate = new java.sql.Date(tempDate.getTime());
-		} catch (ParseException e2) {
-			e2.printStackTrace();
-		}
-		
-		//prepare type ID
-		int typeId= getTypeID(type.getText());
-		if(typeId==2)
-			addAmount=-addAmount;
-		
-		//prepare category ID
-		int catId = -1;
-		try {
-			catId = catExists(cat.getText());
-		} catch (ClassNotFoundException | SQLException e2) {
-			e2.printStackTrace();
-		}
-		
-		//now  create TransactionModel object with these variables
-		TransactionModel tm = new TransactionModel(transacID, addAmount, myDate, typeId, catId);
-		
-		//insert that TransactionModel object's data into the DB
-		try {
-			insertInDb(tm);
-		} catch (ClassNotFoundException | SQLException e1) {
-			e1.printStackTrace();
+		if(e.getActionCommand().equals("deleteBtn")){   //we are deleting a transaction
+			JPanel tab4 = (JPanel) jtp.getComponentAt(3);
+		 	JLabel transacIdLabel = (JLabel) tab4.getComponent(1);
+		 	String transacId = transacIdLabel.getText();
+		 	try {
+				deleteFromDb(transacId);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}	
+		else { //e.getActionCommand().equals("addBtn") meaning we are adding a transaction
+			
+			//prepare transaction ID
+			int transacID = -1;
+			try {
+				transacID = getLastIdTrans() + 1;
+			} catch (ClassNotFoundException | SQLException e1) {
+				e1.printStackTrace();
+			}
+			//prepare amount
+			double addAmount = Double.parseDouble(amount.getText());
+			//prepare date
+			java.sql.Date myDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				Date tempDate = format.parse(date.getText());
+				myDate = new java.sql.Date(tempDate.getTime());
+			} catch (ParseException e2) {
+				e2.printStackTrace();
+			}
+			//prepare type ID
+			int typeId = getTypeID(type.getText());
+			if (typeId == 2)
+				addAmount = -addAmount;
+			//prepare category ID
+			int catId = -1;
+			try {
+				catId = catExists(cat.getText());
+			} catch (ClassNotFoundException | SQLException e2) {
+				e2.printStackTrace();
+			}
+			//now  create TransactionModel object with these variables
+			TransactionModel tm = new TransactionModel(transacID, addAmount, myDate, typeId, catId);
+			//insert that TransactionModel object's data into the DB
+			try {
+				insertInDb(tm);
+			} catch (ClassNotFoundException | SQLException e1) {
+				e1.printStackTrace();
+			} 
 		}
 		
 		//update the Model so that ViewTransactions is updated
@@ -114,6 +129,16 @@ public class AddTransacController implements ActionListener {
 		jtp.setSelectedIndex(2);
 	}
 		
+	private void deleteFromDb(String transacId) throws SQLException {
+		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
+		Connection con = DriverManager.getConnection(url, "root", "password");
+		System.out.println("Connection established Successfully");
+		Statement statement=con.createStatement();
+		String sqlQuery = "DELETE FROM transaction WHERE transaction_id = '"+ transacId + "'";
+		statement.executeUpdate(sqlQuery);
+		con.close();
+	}
+
 	private int getTypeID(String StringType){
 		if(StringType.equals("income")){
 			return 1;
@@ -127,7 +152,8 @@ public class AddTransacController implements ActionListener {
 		else return -1;
 	}
 	
-	private int catExists (String newcat)throws SQLException, ClassNotFoundException{
+	//checks if the category exists in the DB; and if not creates one
+	private int catExists (String newcat)throws SQLException, ClassNotFoundException{ 
 		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
 		Connection con = DriverManager.getConnection(url, "root", "password");
 		System.out.println("Connection established Successfully");
