@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @SuppressWarnings("serial")
+
+//This class represents the main table with all the transactions which are retrieved from the database.
 public class Model extends DefaultTableModel {
 	
 	public static final Object[] TABLE_HEADER = { "Transaction ID", "Amount",
@@ -20,6 +22,7 @@ public class Model extends DefaultTableModel {
 		super(retrieveDATA(), TABLE_HEADER);
 	}
 	
+	//Retrieves transactions from the database
 	protected static Object[][] retrieveDATA() throws SQLException, ClassNotFoundException{
 		String url ="jdbc:mysql://localhost:20002/mymoney?useSSL=false";
 		Connection con = DriverManager.getConnection(url, "root", "password");

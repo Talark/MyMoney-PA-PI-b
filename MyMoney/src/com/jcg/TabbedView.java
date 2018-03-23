@@ -1,6 +1,6 @@
 package com.jcg;
 
-import java.awt.Color;
+import java.awt.Color;	
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -11,6 +11,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import org.jdesktop.swingx.JXDatePicker;
+
+//This class represents the View component of our MVC architecture and provides a user-friendly interface for the application.
+//It takes the table Model to display it.
 public class TabbedView extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
@@ -39,6 +45,7 @@ public class TabbedView extends JFrame {
         jtp.addTab("Selected Transaction", jp4);
 	}
 
+	//Create View Transactions tab
 	private JPanel createTab1() {
 				// Create swing UI components 
 				JLabel typeLabel = new JLabel("Type");
@@ -83,15 +90,25 @@ public class TabbedView extends JFrame {
 
 				// Set the view layout
 				JPanel ctrlPane = new JPanel(new GridLayout(5,2));
-				ctrlPane.add(typeLabel);
-				ctrlPane.add(typeTextField);
-				ctrlPane.add(catLabel);
-				ctrlPane.add(catTextField);
-				ctrlPane.add(fromDateLabel);
-				ctrlPane.add(fromDateTextField);
-				ctrlPane.add(toDateLabel);
-				ctrlPane.add(toDateTextField);
-				ctrlPane.add(filterButton);
+				JPanel p1 = new JPanel();
+				p1.add(typeLabel);
+				p1.add(typeTextField);
+				ctrlPane.add(p1);
+				JPanel p2 = new JPanel();
+				p2.add(catLabel);
+				p2.add(catTextField);
+				ctrlPane.add(p2);
+				JPanel p3 = new JPanel();
+				p3.add(fromDateLabel);
+				p3.add(fromDateTextField);
+				ctrlPane.add(p3);
+				JPanel p4 = new JPanel();
+				p4.add(toDateLabel);
+				p4.add(toDateTextField);
+				ctrlPane.add(p4);
+				JPanel p5 = new JPanel();
+				p5.add(filterButton);
+				ctrlPane.add(p5);
 
 				JScrollPane tableScrollPane = new JScrollPane(table);
 				tableScrollPane.setPreferredSize(new Dimension(700, 182));
@@ -108,39 +125,60 @@ public class TabbedView extends JFrame {
 		return containerPanel;
 	}
 
+	//Create Add Transaction tab
 	private JPanel createTab2() {
 		
-		 JLabel label1 = new JLabel("Amount");
-	     JLabel label2 = new JLabel("Date");
-	     JLabel label3 = new JLabel("Type");
-	     JLabel label4 = new JLabel("Category");
+		 JLabel label1 = new JLabel("Amount: ");
+		 label1.setFont(new Font("Myriad Pro",Font.PLAIN,18));
+	     JLabel label2 = new JLabel("Date: ");
+	     label2.setFont(new Font("Myriad Pro",Font.PLAIN,18));
+	     JLabel label3 = new JLabel("Type: ");
+	     label3.setFont(new Font("Myriad Pro",Font.PLAIN,18));
+	     JLabel label4 = new JLabel("Category: ");
+	     label4.setFont(new Font("Myriad Pro",Font.PLAIN,18));
 	 
 	        
 		JTextField amount = new JTextField(10);
-		JTextField date = new JTextField(10);
-		JTextField type = new JTextField(10);
-		JTextField cat = new JTextField(10);
+		JXDatePicker datePicker = new JXDatePicker();
+        datePicker.setDate(Calendar.getInstance().getTime());
+        datePicker.setFormats(new SimpleDateFormat("yyyy-MM-dd"));
+		JComboBox type=new JComboBox();
+		String[] types = {"income", "expense", "loan"};
+		type = new JComboBox(types);
+		JTextField cat = new JTextField(15);
 		
 		JButton addtrbutton = new JButton("Add Transaction");
-		TransacController cont= new TransacController(model, jtp, amount,date,type,cat, balLabel);
+		TransacController cont= new TransacController(model, jtp, amount,datePicker,type,cat, balLabel);
 		addtrbutton.addActionListener(cont);
 		addtrbutton.setActionCommand("addBtn");
 
 		
-		JPanel containerPanel = new JPanel(new GridLayout(5,2));
-		containerPanel.add(label1);
-		containerPanel.add(amount);
-		containerPanel.add(label2);
-		containerPanel.add(date);
-		containerPanel.add(label3);
-		containerPanel.add(type);
-		containerPanel.add(label4);
-		containerPanel.add(cat);		
-		containerPanel.add(addtrbutton);
+		JPanel containerPanel = new JPanel(new GridLayout(0,2));
+		JPanel p1 = new JPanel();
+		p1.add(label1);
+		p1.add(amount);
+		containerPanel.add(p1);
+		JPanel p2 = new JPanel();
+		p2.add(label2);
+		p2.add(datePicker);
+		containerPanel.add(p2);
+		JPanel p3 = new JPanel();
+		p3.add(label3);
+		p3.add(type);
+		containerPanel.add(p3);
+		JPanel p4 = new JPanel();
+		p4.add(label4);
+		p4.add(cat); 
+		containerPanel.add(p4);
+		JPanel p5 = new JPanel();
+		p5.add(addtrbutton);
+		containerPanel.add(p5);
 		containerPanel.setVisible(true);
 		return containerPanel;
+
 	}
 	
+	//Creates Balance Tab
 	private JPanel createTab3() {
 		JPanel containerPanel = new JPanel();
 		
@@ -166,17 +204,28 @@ public class TabbedView extends JFrame {
 		return containerPanel;
 	}
 	
+	//Creates "Selected Transaction" tab
 	private JPanel createTab4() {
 		 JLabel label1 = new JLabel("Transaction ID: ");
+		 label1.setFont(new Font("Myriad Pro",Font.BOLD,18));
 		 JLabel label1value = new JLabel();
+		 label1value.setFont(new Font("Myriad Pro",Font.PLAIN,18));
 		 JLabel label2 = new JLabel("Amount: ");
+		 label2.setFont(new Font("Myriad Pro",Font.BOLD,18));
 		 JLabel label2value = new JLabel();
+		 label2value.setFont(new Font("Myriad Pro",Font.PLAIN,18));
 	     JLabel label3 = new JLabel("Date: ");
+	     label3.setFont(new Font("Myriad Pro",Font.BOLD,18));
 		 JLabel label3value = new JLabel();
+		 label3value.setFont(new Font("Myriad Pro",Font.PLAIN,18));
 		 JLabel label4 = new JLabel("Type: ");
+		 label4.setFont(new Font("Myriad Pro",Font.BOLD,18));
 		 JLabel label4value = new JLabel();
+		 label4value.setFont(new Font("Myriad Pro",Font.PLAIN,18));
 	     JLabel label5 = new JLabel("Category: "); 
+	     label5.setFont(new Font("Myriad Pro",Font.BOLD,18));
 		 JLabel label5value = new JLabel();
+		 label5value.setFont(new Font("Myriad Pro",Font.PLAIN,18));
 		 
 		 JButton del = new JButton("Delete Transaction");
 		 TransacController control= new TransacController(model, jtp, balLabel);

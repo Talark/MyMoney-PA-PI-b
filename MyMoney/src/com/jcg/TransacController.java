@@ -1,14 +1,17 @@
 package com.jcg;
 
-import java.awt.Color;
+import java.awt.Color;	
 import java.awt.event.ActionEvent;	
 import java.awt.event.ActionListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdesktop.swingx.JXDatePicker;
 
 import java.sql.Connection;		
 import java.sql.DriverManager;
@@ -20,18 +23,19 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+//This is a Controller class that takes care of adding and deleting transactions and updating the model accordingly.
 public class TransacController implements ActionListener {
 	
 	private DefaultTableModel model;
 	private JTabbedPane jtp;
 	private JTextField amount;
-	private JTextField date;
-	private JTextField type;
+	private JXDatePicker date;
+	private JComboBox type;
 	private JTextField cat;
 	private JLabel balanceLabel;
 	
-	public TransacController(DefaultTableModel model, JTabbedPane jtp, JTextField amount, JTextField date,
-			JTextField type, JTextField cat, JLabel balanceLabel) {
+	public TransacController(DefaultTableModel model, JTabbedPane jtp, JTextField amount, JXDatePicker date,
+			JComboBox type, JTextField cat, JLabel balanceLabel) {
 		super();	
 		this.model=model;
 		this.jtp = jtp;
@@ -49,9 +53,9 @@ public class TransacController implements ActionListener {
 		this.balanceLabel = balLabel;
 	}
 
-	@Override
+	//This method is called when the "Add Transaction" or "Delete Transaction" button is clicked. It makes the necessary changes in 
+	//the database, updates the balance and the model
 	public void actionPerformed(ActionEvent e){
-		
 		
 		if(e.getActionCommand().equals("deleteBtn")){   //we are deleting a transaction
 			JPanel tab4 = (JPanel) jtp.getComponentAt(3);
@@ -72,21 +76,22 @@ public class TransacController implements ActionListener {
 			} catch (ClassNotFoundException | SQLException e1) {
 				e1.printStackTrace();
 			}
+			
 			//prepare amount
 			double addAmount = Double.parseDouble(amount.getText());
+			
 			//prepare date
 			java.sql.Date myDate = null;
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				Date tempDate = format.parse(date.getText());
-				myDate = new java.sql.Date(tempDate.getTime());
-			} catch (ParseException e2) {
-				e2.printStackTrace();
-			}
+			Date tempDate = date.getDate();
+			myDate = new java.sql.Date(tempDate.getTime());
+				
 			//prepare type ID
-			int typeId = getTypeID(type.getText());
+			String typ = (String)type.getSelectedItem();
+			int typeId = getTypeID(typ);
 			if (typeId == 2)
 				addAmount = -addAmount;
+			
 			//prepare category ID
 			int catId = -1;
 			try {
@@ -94,8 +99,10 @@ public class TransacController implements ActionListener {
 			} catch (ClassNotFoundException | SQLException e2) {
 				e2.printStackTrace();
 			}
+			
 			//now  create TransactionModel object with these variables
 			TransactionModel tm = new TransactionModel(transacID, addAmount, myDate, typeId, catId);
+			
 			//insert that TransactionModel object's data into the DB
 			try {
 				insertInDb(tm);
@@ -140,13 +147,13 @@ public class TransacController implements ActionListener {
 	}
 
 	private int getTypeID(String StringType){
-		if(StringType.equals("income")){
+		if(StringType.equalsIgnoreCase("income")){
 			return 1;
 		}
-		else if(StringType.equals("expense")){
+		else if(StringType.equalsIgnoreCase("expense")){
 			return 2;
 		}
-		else if(StringType.equals("loan")){
+		else if(StringType.equalsIgnoreCase("loan")){
 			return 3;
 		}
 		else return -1;

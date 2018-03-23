@@ -1,5 +1,6 @@
 package com.jcg;
 
+//This class represents the transaction entity according to the transaction table in the database
 public class TransactionModel {
 private int transactionId;
 private double amount;

@@ -11,6 +11,7 @@ import java.sql.Statement;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+//This is a Controller class that manages the filtering of transactions by their transaction type, category and date range.
 public class FilterController implements ActionListener {
 	
 	private JTextField typeTextField; 
@@ -28,7 +29,8 @@ public class FilterController implements ActionListener {
 		this.model = model;
 	}
 
-	@Override
+	//This method is called when the user clicks the "Filter" button in the View Transactions tab after choosing to filter by date,
+	//type and/or category of transaction. It updates the Model to show the relevant transactions.
 	public void actionPerformed(ActionEvent e) {
 		try{
 			actionPerformed2();

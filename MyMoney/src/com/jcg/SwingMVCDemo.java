@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 
 
-public class SwingMVCDemo {
+public class SwingMVCDemo{
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
